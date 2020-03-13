@@ -2,6 +2,8 @@ package ru.dvkombarov.app.domain;
 
 import com.opencsv.bean.CsvBindByName;
 
+import java.util.Objects;
+
 public class Question {
 
     @CsvBindByName
@@ -38,6 +40,21 @@ public class Question {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question = (Question) o;
+        return Objects.equals(number, question.number) &&
+                Objects.equals(text, question.text) &&
+                Objects.equals(answer, question.answer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number, text, answer);
     }
 
     @Override

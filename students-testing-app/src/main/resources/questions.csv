@@ -1,6 +1,6 @@
 number,text,answer
-1,Сколько вам лет?,
-2,Сколько будет 25 + 49?,74
-3,В каком году началась Первая мировая война?,1914
-4,В каком году началась Вторая мировая война?,1939
-5,В каком году начнется Третья мировая война?,
+1,How old are you?,
+2,How much is 25 + 49?,74
+3,What year did World War I start?,1914
+4,What year did World War II start?,1939
+5,What year will World War III start?,

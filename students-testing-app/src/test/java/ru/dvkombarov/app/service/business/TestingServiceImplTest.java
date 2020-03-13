@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import ru.dvkombarov.app.domain.Question;
 import ru.dvkombarov.app.service.infrastructure.InputService;
+import ru.dvkombarov.app.service.infrastructure.LocalizationService;
 import ru.dvkombarov.app.service.infrastructure.OutputService;
 
 import java.util.Collections;
@@ -32,9 +33,13 @@ class TestingServiceImplTest {
     @Mock
     private OutputService outputService;
 
+    @Mock
+    private LocalizationService localizationService;
+
     @BeforeAll
     void init() {
         MockitoAnnotations.initMocks(this);
+        doReturn("").when(localizationService).getLocalValue(anyString());
     }
 
     @DisplayName("если нет Question, вызвать только один раз OutputService")
@@ -50,7 +55,12 @@ class TestingServiceImplTest {
     @Test
     void inputServiceCallCountShouldMatchWithQuestionsCount() {
         resetInteractions();
-        testingService.test(List.of(new Question(), new Question(), new Question()));
+        Question question = new Question();
+        question.setNumber("1");
+        question.setText("");
+        question.setAnswer("");
+        doReturn("").when(localizationService).getLocalValue(anyString(), anyList());
+        testingService.test(List.of(question, question, question));
         verify(inputService, times(3)).readLine();
     }
 
