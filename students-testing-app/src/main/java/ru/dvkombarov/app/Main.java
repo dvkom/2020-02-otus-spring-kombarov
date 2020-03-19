@@ -1,24 +1,42 @@
 package ru.dvkombarov.app;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.dvkombarov.app.domain.Question;
-import ru.dvkombarov.app.service.business.QuestionService;
-import ru.dvkombarov.app.service.business.TestingService;
+import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.*;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import ru.dvkombarov.app.service.business.TestingRunner;
 
-import java.util.Collection;
+import java.io.InputStream;
+import java.io.PrintStream;
 
+@ComponentScan
+@PropertySource("classpath:application.properties")
+@Configuration
 public class Main {
 
-    private static final String CONFIG_LOCATION = "/spring-context.xml";
-
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext context =
-                new ClassPathXmlApplicationContext(CONFIG_LOCATION);
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext(Main.class);
 
-        QuestionService questionService = context.getBean(QuestionService.class);
-        TestingService testingService = context.getBean(TestingService.class);
+        TestingRunner testingRunner = context.getBean(TestingRunner.class);
+        testingRunner.run();
+    }
 
-        Collection<Question> questions = questionService.getAllQuestions();
-        testingService.test(questions);
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("i18n/bundle");
+        messageSource.setDefaultEncoding("UTF-8");
+
+        return messageSource;
+    }
+
+    @Bean
+    public InputStream inputStream() {
+        return System.in;
+    }
+
+    @Bean
+    public PrintStream printStream() {
+        return System.out;
     }
 }

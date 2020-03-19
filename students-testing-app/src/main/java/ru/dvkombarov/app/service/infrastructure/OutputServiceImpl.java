@@ -1,7 +1,10 @@
 package ru.dvkombarov.app.service.infrastructure;
 
+import org.springframework.stereotype.Service;
+
 import java.io.PrintStream;
 
+@Service
 public class OutputServiceImpl implements OutputService {
 
     private final PrintStream printStream;
