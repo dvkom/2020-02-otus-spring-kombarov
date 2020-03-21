@@ -2,8 +2,8 @@ package ru.dvkombarov.app.dao;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.dvkombarov.app.configs.YamlProps;
 import ru.dvkombarov.app.domain.Question;
 import ru.dvkombarov.app.service.infrastructure.LocalizationService;
 
@@ -17,12 +17,12 @@ import java.util.Collections;
 public class QuestionDaoFileImpl implements QuestionDao {
 
     private final LocalizationService localizationService;
-    private final String defaultPathToFile;
+    private final YamlProps props;
 
     public QuestionDaoFileImpl(LocalizationService localizationService,
-                               @Value("${dao.pathToFile}") String defaultPathToFile) {
+                               YamlProps props) {
         this.localizationService = localizationService;
-        this.defaultPathToFile = defaultPathToFile;
+        this.props = props;
     }
 
     @Override
@@ -43,6 +43,6 @@ public class QuestionDaoFileImpl implements QuestionDao {
     private String getPathToFile() {
         String pathToFile = localizationService.getLocalValue("dao.pathToFile");
 
-        return pathToFile == null ? defaultPathToFile : pathToFile;
+        return pathToFile == null ? props.getPathToFile() : pathToFile;
     }
 }
