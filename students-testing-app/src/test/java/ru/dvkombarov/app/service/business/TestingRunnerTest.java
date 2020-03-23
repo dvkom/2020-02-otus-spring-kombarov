@@ -17,10 +17,10 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("Класс TestingRunnerImpl")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class TestingRunnerImplTest {
+class TestingRunnerTest {
 
     @InjectMocks
-    private TestingRunnerImpl testingRunner;
+    private TestingRunner testingRunner;
 
     @Mock
     private QuestionService questionService;

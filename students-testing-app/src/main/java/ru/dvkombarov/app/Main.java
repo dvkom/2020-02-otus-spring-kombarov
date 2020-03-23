@@ -1,33 +1,22 @@
 package ru.dvkombarov.app;
 
-import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.*;
-import org.springframework.context.support.ResourceBundleMessageSource;
-import ru.dvkombarov.app.service.business.TestingRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import ru.dvkombarov.app.configs.YamlProps;
 
 import java.io.InputStream;
 import java.io.PrintStream;
 
-@ComponentScan
-@PropertySource("classpath:application.properties")
+@SpringBootApplication
 @Configuration
+@EnableConfigurationProperties(YamlProps.class)
 public class Main {
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(Main.class);
-
-        TestingRunner testingRunner = context.getBean(TestingRunner.class);
-        testingRunner.run();
-    }
-
-    @Bean
-    public MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("i18n/bundle");
-        messageSource.setDefaultEncoding("UTF-8");
-
-        return messageSource;
+        SpringApplication.run(Main.class, args);
     }
 
     @Bean
