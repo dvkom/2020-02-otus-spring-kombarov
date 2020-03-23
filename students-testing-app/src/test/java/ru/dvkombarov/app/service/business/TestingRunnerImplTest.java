@@ -17,10 +17,10 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("Класс TestingRunnerImpl")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class TestingRunnerTest {
+class TestingRunnerImplTest {
 
     @InjectMocks
-    private TestingRunner testingRunner;
+    private TestingRunnerImpl testingRunnerImpl;
 
     @Mock
     private QuestionService questionService;
@@ -39,7 +39,7 @@ class TestingRunnerTest {
         Collection<Question> questions = List.of(new Question());
         doReturn(questions).when(questionService).getAllQuestions();
         doNothing().when(testingService).test(anyCollection());
-        testingRunner.run();
+        testingRunnerImpl.run();
         verify(questionService).getAllQuestions();
         verify(testingService).test(eq(questions));
     }
