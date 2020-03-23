@@ -17,12 +17,6 @@ public class TestingRunnerImpl implements TestingRunner {
         this.testingService = testingService;
     }
 
-//    @Override
-//    public void run(String... args) {
-//        Collection<Question> questions = questionService.getAllQuestions();
-//        testingService.test(questions);
-//    }
-
     @Override
     public void run() {
         Collection<Question> questions = questionService.getAllQuestions();
