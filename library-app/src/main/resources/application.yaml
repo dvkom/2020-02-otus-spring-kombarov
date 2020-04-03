@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/library?useSSL=false
+    username: root
+    password: mmm333
+    initialization-mode: always
+    platform: prod
