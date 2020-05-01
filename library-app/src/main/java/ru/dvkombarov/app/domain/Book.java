@@ -7,6 +7,20 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "books")
+@NamedEntityGraph(name = "with-all-eg",
+        attributeNodes = {
+                @NamedAttributeNode("author"),
+                @NamedAttributeNode("genre"),
+                @NamedAttributeNode(value = "comments", subgraph = "comments-subgraph")},
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "comments-subgraph",
+                        attributeNodes = {
+                                @NamedAttributeNode("book")
+                        }
+                )
+        }
+)
 public class Book {
 
     @Id
@@ -27,7 +41,7 @@ public class Book {
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @OneToMany(mappedBy="book", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
 
     public Book() {

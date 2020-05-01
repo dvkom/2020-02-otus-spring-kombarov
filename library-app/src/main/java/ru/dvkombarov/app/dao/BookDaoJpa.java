@@ -4,13 +4,21 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.dvkombarov.app.domain.Book;
 
-import javax.persistence.*;
+import javax.persistence.EntityGraph;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Transactional
 @Repository
 public class BookDaoJpa implements BookDao {
+
+    private static final String GRAPH = "javax.persistence.fetchgraph";
 
     @PersistenceContext
     private EntityManager em;
@@ -32,37 +40,24 @@ public class BookDaoJpa implements BookDao {
 
     @Override
     public Optional<Book> getById(long id) {
-        Optional<Book> optionalBook = Optional.empty();
-        try {
-            TypedQuery<Book> query = em.createQuery("select b from Book b " +
-                            "join fetch b.author " +
-                            "join fetch b.genre " +
-                            "left join fetch b.comments " +
-                            "where b.id = :id",
-                    Book.class);
-            query.setParameter("id", id);
-            optionalBook =  Optional.of(query.getSingleResult());
-        } catch (NoResultException ignored) {
-        }
+        EntityGraph eg = em.getEntityGraph("with-all-eg");
 
-        return optionalBook;
+        return Optional.ofNullable(em.find(Book.class, id, Map.of(GRAPH, eg)));
     }
 
     @Override
     public void deleteById(long id) {
-        Query query = em.createQuery("delete from Book b " +
-                "where b.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        this.getById(id).ifPresent(em::remove);
     }
 
     @Override
     public List<Book> getAll() {
-        TypedQuery<Book> query = em.createQuery("select b from Book b " +
-                        "join fetch b.author " +
-                        "join fetch b.genre " +
-                        "left join fetch b.comments ",
-                Book.class);
-        return query.getResultList();
+        EntityGraph eg = em.getEntityGraph("with-all-eg");
+        CriteriaQuery<Book> cq = em.getCriteriaBuilder().createQuery(Book.class);
+        Root<Book> rootEntry = cq.from(Book.class);
+        CriteriaQuery<Book> all = cq.select(rootEntry);
+        TypedQuery<Book> allQuery = em.createQuery(all).setHint(GRAPH, eg);
+
+        return allQuery.getResultList();
     }
 }

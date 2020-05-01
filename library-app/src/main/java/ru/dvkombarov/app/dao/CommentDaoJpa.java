@@ -5,6 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.dvkombarov.app.domain.Comment;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,25 +29,16 @@ public class CommentDaoJpa implements CommentDao {
 
     @Override
     public Optional<Comment> getById(long id) {
-        Optional<Comment> optionalComment = Optional.empty();
-        try {
-            TypedQuery<Comment> query = em.createQuery("select c from Comment c " +
-                            "join fetch c.book " +
-                            "where c.id = :id",
-                    Comment.class);
-            query.setParameter("id", id);
-            optionalComment =  Optional.of(query.getSingleResult());
-        } catch (NoResultException ignored) {
-        }
-
-        return optionalComment;
+        return Optional.ofNullable(em.find(Comment.class, id));
     }
 
     @Override
     public List<Comment> getAll() {
-        TypedQuery<Comment> query = em.createQuery("select c from Comment c " +
-                        "join fetch c.book ",
-                Comment.class);
-        return query.getResultList();
+        CriteriaQuery<Comment> cq = em.getCriteriaBuilder().createQuery(Comment.class);
+        Root<Comment> rootEntry = cq.from(Comment.class);
+        CriteriaQuery<Comment> all = cq.select(rootEntry);
+        TypedQuery<Comment> allQuery = em.createQuery(all);
+
+        return allQuery.getResultList();
     }
 }
