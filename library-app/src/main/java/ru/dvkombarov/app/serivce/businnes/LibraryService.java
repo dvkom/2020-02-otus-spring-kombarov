@@ -11,10 +11,8 @@ public interface LibraryService {
     Book saveBook(String title, int pageCount, long authorId, long genreId);
     void deleteBookById(long bookId);
     void updateBookInfo(long id, String title, int pageCount, long authorId, long genreId);
-
     Comment saveComment(String text, long bookId);
-
     Comment getCommentById(long id);
-
+    List<Comment> getAllCommentsByBookId(long id);
     List<Comment> getAllComments();
 }

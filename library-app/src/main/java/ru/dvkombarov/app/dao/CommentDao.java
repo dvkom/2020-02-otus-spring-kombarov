@@ -9,4 +9,5 @@ public interface CommentDao {
     Comment insert(Comment comment);
     Optional<Comment> getById(long id);
     List<Comment> getAll();
+    List<Comment> getByBookId(long bookId);
 }

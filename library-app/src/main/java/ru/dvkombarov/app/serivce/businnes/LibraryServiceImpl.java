@@ -92,6 +92,11 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
+    public List<Comment> getAllCommentsByBookId(long id) {
+        return commentDao.getByBookId(id);
+    }
+
+    @Override
     public List<Comment> getAllComments() {
         return commentDao.getAll();
     }

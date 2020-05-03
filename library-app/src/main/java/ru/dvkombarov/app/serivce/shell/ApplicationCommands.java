@@ -112,6 +112,23 @@ public class ApplicationCommands {
                 .orElse(NOT_FOUND_MESSAGE);
     }
 
+    @ShellMethod(value = "Get all comments by book Id", key = {"get-cmts-by", "gcsb"})
+    public String getAllCommentsForBook(long id) {
+        String result;
+        try {
+            result = Optional.ofNullable(libraryService.getAllCommentsByBookId(id))
+                    .stream()
+                    .flatMap(Collection::stream)
+                    .map(Comment::toString)
+                    .collect(Collectors.joining("\n"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = ERROR_MESSAGE;
+        }
+
+        return result;
+    }
+
     @ShellMethod(value = "Add new comment", key = {"add-cmt", "ac"})
     public String addComment(String text, long bookId) {
         String result = DONE_MESSAGE;

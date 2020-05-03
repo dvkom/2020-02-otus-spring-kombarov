@@ -48,8 +48,7 @@ public class BookDaoJpaTest {
         assertThat(books).isNotNull().hasSize(2)
                 .allMatch(s -> !s.getTitle().equals(""))
                 .allMatch(s -> s.getAuthor() != null)
-                .allMatch(s -> s.getGenre() != null)
-                .allMatch(s -> s.getComments() != null && s.getComments().size() == 1);
+                .allMatch(s -> s.getGenre() != null);
         assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(1);
     }
 

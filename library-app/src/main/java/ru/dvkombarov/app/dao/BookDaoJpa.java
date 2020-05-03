@@ -40,7 +40,7 @@ public class BookDaoJpa implements BookDao {
 
     @Override
     public Optional<Book> getById(long id) {
-        EntityGraph eg = em.getEntityGraph("with-all-eg");
+        EntityGraph eg = em.getEntityGraph("with-author-and-genre-eg");
 
         return Optional.ofNullable(em.find(Book.class, id, Map.of(GRAPH, eg)));
     }
@@ -52,7 +52,7 @@ public class BookDaoJpa implements BookDao {
 
     @Override
     public List<Book> getAll() {
-        EntityGraph eg = em.getEntityGraph("with-all-eg");
+        EntityGraph eg = em.getEntityGraph("with-author-and-genre-eg");
         CriteriaQuery<Book> cq = em.getCriteriaBuilder().createQuery(Book.class);
         Root<Book> rootEntry = cq.from(Book.class);
         CriteriaQuery<Book> all = cq.select(rootEntry);

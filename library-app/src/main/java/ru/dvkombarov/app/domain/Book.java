@@ -7,18 +7,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "books")
-@NamedEntityGraph(name = "with-all-eg",
+@NamedEntityGraph(name = "with-author-and-genre-eg",
         attributeNodes = {
                 @NamedAttributeNode("author"),
-                @NamedAttributeNode("genre"),
-                @NamedAttributeNode(value = "comments", subgraph = "comments-subgraph")},
-        subgraphs = {
-                @NamedSubgraph(
-                        name = "comments-subgraph",
-                        attributeNodes = {
-                                @NamedAttributeNode("book")
-                        }
-                )
+                @NamedAttributeNode("genre")
         }
 )
 public class Book {
@@ -112,7 +104,6 @@ public class Book {
                 ", pageCount=" + pageCount +
                 ", author=" + author +
                 ", genre=" + genre +
-                ", comments=" + comments +
                 '}';
     }
 
@@ -125,12 +116,11 @@ public class Book {
                 pageCount == book.pageCount &&
                 Objects.equals(title, book.title) &&
                 Objects.equals(author, book.author) &&
-                Objects.equals(genre, book.genre) &&
-                Objects.equals(comments, book.comments);
+                Objects.equals(genre, book.genre);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, pageCount, author, genre, comments);
+        return Objects.hash(id, title, pageCount, author, genre);
     }
 }

@@ -5,6 +5,9 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "comments")
+@NamedEntityGraph(name = "with-book-eg",
+        attributeNodes = {@NamedAttributeNode("book")}
+)
 public class Comment {
 
     @Id

@@ -35,6 +35,15 @@ public class CommentDaoJpaTest {
                 .isEqualToComparingFieldByField(expectedComment);
     }
 
+    @DisplayName("загружать список всех комментариев по id книги")
+    @Test
+    void shouldReturnCorrectCommentsListByBookId() {
+        List<Comment> comments = commentDaoJpa.getByBookId(1L);
+
+        assertThat(comments).isNotNull().hasSize(1)
+                .allMatch(s -> s.getText().equals("Text1"));
+    }
+
     @DisplayName("загружать список всех комментариев с полной информацией о них")
     @Test
     void shouldReturnCorrectCommentsListWithAllInfo() {

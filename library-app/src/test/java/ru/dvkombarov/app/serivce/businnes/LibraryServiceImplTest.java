@@ -118,6 +118,16 @@ class LibraryServiceImplTest {
     }
 
     @Test
+    @DisplayName("возвращять все комментарии по Id книги")
+    void shouldReturnAllCommentsByBookId() {
+        List<Comment> comments = List.of(new Comment(0, null, new Book()));
+
+        doReturn(comments).when(commentDao)
+                .getByBookId(anyLong());
+        assertThat(libraryService.getAllCommentsByBookId(1)).isEqualTo(comments);
+    }
+
+    @Test
     @DisplayName("возвращять все комментарии")
     void shouldReturnAllComments() {
         List<Comment> comments = List.of(new Comment(0, null, new Book()));

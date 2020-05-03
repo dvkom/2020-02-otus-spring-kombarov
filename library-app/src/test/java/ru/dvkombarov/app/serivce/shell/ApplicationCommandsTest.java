@@ -31,6 +31,7 @@ class ApplicationCommandsTest {
 
     private static final String COMMAND_GET_ALL_BOOKS = "get-books";
     private static final String COMMAND_GET_ALL_COMMENTS = "get-cmts";
+    private static final String COMMAND_GET_ALL_COMMENTS_BY = "get-cmts-by 1";
     private static final String COMMAND_GET_BOOK = "get-book 1";
     private static final String COMMAND_GET_COMMENT = "get-cmt 1";
     private static final String COMMAND_DELETE_BOOK = "delete-book 1";
@@ -150,6 +151,23 @@ class ApplicationCommandsTest {
     void getAllCommentsShouldPrintErrorMessage_whenExceptionHappened() {
         doThrow(RuntimeException.class).when(libraryService).getAllComments();
         String res = (String) shell.evaluate(() -> COMMAND_GET_ALL_COMMENTS);
+        assertThat(res).isEqualTo(ERROR_MESSAGE);
+    }
+
+    @DisplayName("печатать информацию о комментариях книги при команде get-cmts-by")
+    @Test
+    void getAllCommentsForBookShouldPrintComments_whenCommentsReceived() {
+        doReturn("I am a Comment").when(mockComment).toString();
+        doReturn(List.of(mockComment)).when(libraryService).getAllCommentsByBookId(anyLong());
+        String res = (String) shell.evaluate(() -> COMMAND_GET_ALL_COMMENTS_BY);
+        assertThat(res).isEqualTo("I am a Comment");
+    }
+
+    @DisplayName("печатать сообщение об ошибке при Exception в get-cmts-by")
+    @Test
+    void getAllCommentsForBookShouldPrintErrorMessage_whenExceptionHappened() {
+        doThrow(RuntimeException.class).when(libraryService).getAllCommentsByBookId(anyLong());
+        String res = (String) shell.evaluate(() -> COMMAND_GET_ALL_COMMENTS_BY);
         assertThat(res).isEqualTo(ERROR_MESSAGE);
     }
 
