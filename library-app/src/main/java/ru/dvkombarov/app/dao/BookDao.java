@@ -3,12 +3,12 @@ package ru.dvkombarov.app.dao;
 import ru.dvkombarov.app.domain.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookDao {
-
-    void insert(Book book);
+    Book insert(Book book);
     void update(Book book);
-    Book getById(long id);
+    Optional<Book> getById(long id);
     void deleteById(long id);
     List<Book> getAll();
 }
