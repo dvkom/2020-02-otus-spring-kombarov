@@ -1,4 +1,4 @@
-package ru.dvkombarov.app.dao;
+package ru.dvkombarov.app.repository;
 
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.DisplayName;
@@ -6,39 +6,27 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 import ru.dvkombarov.app.domain.Book;
 import ru.dvkombarov.app.domain.Comment;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Репозиторий на основе Jpa для работы с комментариями должен ")
+@DisplayName("Репозиторий на основе Jpa для работы с книгами должен ")
 @DataJpaTest
-@Import(CommentDaoJpa.class)
-public class CommentDaoJpaTest {
+public class CommentRepositoryTest {
 
     @Autowired
-    private CommentDaoJpa commentDaoJpa;
+    private CommentRepository commentRepository;
 
     @Autowired
     private TestEntityManager em;
 
-    @DisplayName("загружать информацию о нужном комментарии по его id")
-    @Test
-    void shouldFindExpectedCommentById() {
-        Optional<Comment> optionalActualComment = commentDaoJpa.getById(1L);
-        Comment expectedComment = em.find(Comment.class, 1L);
-        assertThat(optionalActualComment).isPresent().get()
-                .isEqualToComparingFieldByField(expectedComment);
-    }
-
     @DisplayName("загружать список всех комментариев по id книги")
     @Test
     void shouldReturnCorrectCommentsListByBookId() {
-        List<Comment> comments = commentDaoJpa.getByBookId(1L);
+        List<Comment> comments = commentRepository.getByBookId(1L);
 
         assertThat(comments).isNotNull().hasSize(1)
                 .allMatch(s -> s.getText().equals("Text1"));
@@ -51,7 +39,7 @@ public class CommentDaoJpaTest {
                 .unwrap(SessionFactory.class);
         sessionFactory.getStatistics().setStatisticsEnabled(true);
 
-        List<Comment> comments = commentDaoJpa.getAll();
+        List<Comment> comments = commentRepository.findAll();
         assertThat(comments).isNotNull().hasSize(2)
                 .allMatch(s -> !s.getText().equals(""))
                 .allMatch(s -> s.getBook() != null);
@@ -62,7 +50,7 @@ public class CommentDaoJpaTest {
     @Test
     void shouldSaveAllCommentInfo() {
         Comment comment = new Comment(0, "test", new Book());
-        commentDaoJpa.insert(comment);
+        commentRepository.save(comment);
         assertThat(comment.getId()).isGreaterThan(0);
 
         Comment actualComment = em.find(Comment.class, comment.getId());

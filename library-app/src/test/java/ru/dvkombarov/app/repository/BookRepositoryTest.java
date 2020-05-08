@@ -1,4 +1,4 @@
-package ru.dvkombarov.app.dao;
+package ru.dvkombarov.app.repository;
 
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.DisplayName;
@@ -6,12 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 import ru.dvkombarov.app.domain.Author;
 import ru.dvkombarov.app.domain.Book;
 import ru.dvkombarov.app.domain.Genre;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,11 +17,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Репозиторий на основе Jpa для работы с книгами должен ")
 @DataJpaTest
-@Import(BookDaoJpa.class)
-public class BookDaoJpaTest {
+public class BookRepositoryTest {
 
     @Autowired
-    private BookDaoJpa bookDaoJpa;
+    private BookRepository bookRepository;
 
     @Autowired
     private TestEntityManager em;
@@ -31,7 +28,7 @@ public class BookDaoJpaTest {
     @DisplayName("загружать информацию о нужной книге по ее id")
     @Test
     void shouldFindExpectedBookById() {
-        Optional<Book> optionalActualBook = bookDaoJpa.getById(1L);
+        Optional<Book> optionalActualBook = bookRepository.getById(1L);
         Book expectedBook = em.find(Book.class, 1L);
         assertThat(optionalActualBook).isPresent().get()
                 .isEqualToComparingFieldByField(expectedBook);
@@ -43,8 +40,9 @@ public class BookDaoJpaTest {
         SessionFactory sessionFactory = em.getEntityManager().getEntityManagerFactory()
                 .unwrap(SessionFactory.class);
         sessionFactory.getStatistics().setStatisticsEnabled(true);
+        sessionFactory.getStatistics().clear();
 
-        List<Book> books = bookDaoJpa.getAll();
+        List<Book> books = bookRepository.findAll();
         assertThat(books).isNotNull().hasSize(2)
                 .allMatch(s -> !s.getTitle().equals(""))
                 .allMatch(s -> s.getAuthor() != null)
@@ -56,7 +54,7 @@ public class BookDaoJpaTest {
     @Test
     void shouldSaveAllBookInfo() {
         Book book = new Book(0, "title", 10, new Author(), new Genre());
-        bookDaoJpa.insert(book);
+        bookRepository.save(book);
         assertThat(book.getId()).isGreaterThan(0);
 
         Book actualBook = em.find(Book.class, book.getId());
@@ -64,31 +62,7 @@ public class BookDaoJpaTest {
                 .matches(s -> s.getTitle().equals(book.getTitle()))
                 .matches(s -> s.getPageCount() == book.getPageCount())
                 .matches(s -> s.getAuthor() != null && s.getAuthor().equals(book.getAuthor()))
-                .matches(s -> s.getGenre() != null && s.getGenre().equals(book.getGenre()))
-                .matches(s -> s.getComments() != null && s.getComments().equals(book.getComments()));
-    }
-
-    @DisplayName("обновлять информацию о заданной книге по ее id")
-    @Test
-    void shouldUpdateBookInfoById() {
-        Book firstBook = em.find(Book.class, 1L);
-        String oldTitle = firstBook.getTitle();
-        int oldPageCount = firstBook.getPageCount();
-        Author oldAuthor = firstBook.getAuthor();
-        Genre oldGenre = firstBook.getGenre();
-
-        firstBook.setTitle("new title");
-        firstBook.setPageCount(2221);
-        firstBook.setAuthor(new Author(0, "name", "country", new Date()));
-        firstBook.setGenre(new Genre(0, "genre", "descr"));
-
-        bookDaoJpa.update(firstBook);
-        Book updatedBook = em.find(Book.class, 1L);
-
-        assertThat(updatedBook.getTitle()).isNotEqualTo(oldTitle).isEqualTo(firstBook.getTitle());
-        assertThat(updatedBook.getPageCount()).isNotEqualTo(oldPageCount).isEqualTo(firstBook.getPageCount());
-        assertThat(updatedBook.getAuthor()).isNotEqualTo(oldAuthor).isEqualTo(firstBook.getAuthor());
-        assertThat(updatedBook.getGenre()).isNotEqualTo(oldGenre).isEqualTo(firstBook.getGenre());
+                .matches(s -> s.getGenre() != null && s.getGenre().equals(book.getGenre()));
     }
 
     @DisplayName("удалять заданную книгу по ее id")
@@ -98,7 +72,7 @@ public class BookDaoJpaTest {
         assertThat(firstBook).isNotNull();
         em.detach(firstBook);
 
-        bookDaoJpa.deleteById(1L);
+        bookRepository.deleteById(1L);
         Book deletedBook = em.find(Book.class, 1L);
 
         assertThat(deletedBook).isNull();

@@ -5,14 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.dvkombarov.app.dao.AuthorDao;
-import ru.dvkombarov.app.dao.BookDao;
-import ru.dvkombarov.app.dao.CommentDao;
-import ru.dvkombarov.app.dao.GenreDao;
 import ru.dvkombarov.app.domain.Author;
 import ru.dvkombarov.app.domain.Book;
 import ru.dvkombarov.app.domain.Comment;
 import ru.dvkombarov.app.domain.Genre;
+import ru.dvkombarov.app.repository.AuthorRepository;
+import ru.dvkombarov.app.repository.BookRepository;
+import ru.dvkombarov.app.repository.CommentRepository;
+import ru.dvkombarov.app.repository.GenreRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,16 +28,16 @@ import static org.mockito.Mockito.verify;
 class LibraryServiceImplTest {
 
     @MockBean
-    private BookDao bookDao;
+    private BookRepository bookRepository;
 
     @MockBean
-    private AuthorDao authorDao;
+    private AuthorRepository authorRepository;
 
     @MockBean
-    private GenreDao genreDao;
+    private GenreRepository genreRepository;
 
     @MockBean
-    private CommentDao commentDao;
+    private CommentRepository commentRepository;
 
     @Autowired
     private LibraryService libraryService;
@@ -46,7 +46,7 @@ class LibraryServiceImplTest {
     @DisplayName("возвращять книгу по Id")
     void shouldReturnBookById() {
         Book book = new Book(1, null, 1, null, null);
-        doReturn(Optional.of(book)).when(bookDao)
+        doReturn(Optional.of(book)).when(bookRepository)
                 .getById(anyLong());
         assertThat(libraryService.getBookById(1)).isEqualTo(book);
     }
@@ -55,8 +55,8 @@ class LibraryServiceImplTest {
     @DisplayName("возвращять все книги")
     void shouldReturnAllBooks() {
         List<Book> books = List.of(new Book(1, null, 1, null, null));
-        doReturn(books).when(bookDao)
-                .getAll();
+        doReturn(books).when(bookRepository)
+                .findAll();
         assertThat(libraryService.getAllBooks()).isEqualTo(books);
     }
 
@@ -66,11 +66,11 @@ class LibraryServiceImplTest {
         Author author = new Author(1, null, null, null);
         Genre genre = new Genre(1, null, null);
         Book book = new Book(0, null, 1, author, genre);
-        doReturn(Optional.of(author)).when(authorDao).getById(anyLong());
-        doReturn(Optional.of(genre)).when(genreDao).getById(anyLong());
+        doReturn(Optional.of(author)).when(authorRepository).getById(anyLong());
+        doReturn(Optional.of(genre)).when(genreRepository).getById(anyLong());
 
         libraryService.saveBook(null, 1, 1, 1);
-        verify(bookDao).insert(eq(book));
+        verify(bookRepository).save(eq(book));
     }
 
     @Test
@@ -78,7 +78,7 @@ class LibraryServiceImplTest {
     void shouldCallDeleteBookMethod() {
         long id = 10;
         libraryService.deleteBookById(id);
-        verify(bookDao).deleteById(id);
+        verify(bookRepository).deleteById(id);
     }
 
     @Test
@@ -87,12 +87,12 @@ class LibraryServiceImplTest {
         Author author = new Author(1, null, null, null);
         Genre genre = new Genre(1, null, null);
         Book book = new Book(0, null, 1, author, genre);
-        doReturn(Optional.of(author)).when(authorDao).getById(anyLong());
-        doReturn(Optional.of(genre)).when(genreDao).getById(anyLong());
-        doReturn(Optional.of(book)).when(bookDao).getById(anyLong());
+        doReturn(Optional.of(author)).when(authorRepository).getById(anyLong());
+        doReturn(Optional.of(genre)).when(genreRepository).getById(anyLong());
+        doReturn(Optional.of(book)).when(bookRepository).getById(anyLong());
 
         libraryService.updateBookInfo(1, null, 1, 1, 1);
-        verify(bookDao).update(eq(book));
+        verify(bookRepository).save(eq(book));
     }
 
     @Test
@@ -102,17 +102,17 @@ class LibraryServiceImplTest {
         Genre genre = new Genre(1, null, null);
         Book book = new Book(0, null, 1, author, genre);
         Comment comment = new Comment(0, null, book);
-        doReturn(Optional.of(book)).when(bookDao).getById(anyLong());
+        doReturn(Optional.of(book)).when(bookRepository).getById(anyLong());
 
         libraryService.saveComment(null, 0);
-        verify(commentDao).insert(eq(comment));
+        verify(commentRepository).save(eq(comment));
     }
 
     @Test
     @DisplayName("возвращять комментарий по Id")
     void shouldReturnCommentById() {
         Comment comment = new Comment(0, null, new Book());
-        doReturn(Optional.of(comment)).when(commentDao)
+        doReturn(Optional.of(comment)).when(commentRepository)
                 .getById(anyLong());
         assertThat(libraryService.getCommentById(0)).isEqualTo(comment);
     }
@@ -122,7 +122,7 @@ class LibraryServiceImplTest {
     void shouldReturnAllCommentsByBookId() {
         List<Comment> comments = List.of(new Comment(0, null, new Book()));
 
-        doReturn(comments).when(commentDao)
+        doReturn(comments).when(commentRepository)
                 .getByBookId(anyLong());
         assertThat(libraryService.getAllCommentsByBookId(1)).isEqualTo(comments);
     }
@@ -131,8 +131,8 @@ class LibraryServiceImplTest {
     @DisplayName("возвращять все комментарии")
     void shouldReturnAllComments() {
         List<Comment> comments = List.of(new Comment(0, null, new Book()));
-        doReturn(comments).when(commentDao)
-                .getAll();
+        doReturn(comments).when(commentRepository)
+                .findAll();
         assertThat(libraryService.getAllComments()).isEqualTo(comments);
     }
 }
