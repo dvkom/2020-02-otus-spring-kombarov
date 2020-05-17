@@ -1,0 +1,7 @@
+spring:
+  shell:
+    interactive:
+      enabled: false
+  data:
+    mongodb:
+      database: test # for test context load
