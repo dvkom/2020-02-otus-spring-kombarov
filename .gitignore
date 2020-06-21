@@ -33,3 +33,5 @@ out/
 *.xlsx
 *.doc
 *.docx
+
+node_modules/
