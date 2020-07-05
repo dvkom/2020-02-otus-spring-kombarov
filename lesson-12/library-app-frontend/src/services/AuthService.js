@@ -28,12 +28,6 @@ class AuthService {
 
     }
 
-    getLoggedInUserName() {
-        let user = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
-        if (user === null) return '';
-        return user
-    }
-
     setupAxiosInterceptors(token) {
         axios.interceptors.request.use(
             (config) => {
