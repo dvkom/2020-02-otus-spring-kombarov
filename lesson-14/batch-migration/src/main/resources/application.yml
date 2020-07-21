@@ -23,3 +23,6 @@ spring:
       host: localhost
       port: 27017
       auto-index-creation: true
+
+app:
+  chunksize: 10

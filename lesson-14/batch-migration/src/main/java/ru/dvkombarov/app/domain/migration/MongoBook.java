@@ -16,11 +16,12 @@ public class MongoBook {
 
     private String title;
 
+    @DBRef
     private MongoAuthor author;
 
+    @DBRef
     private MongoGenre genre;
 
-    @DBRef
     private List<MongoComment> comments;
 
     public MongoBook() {
