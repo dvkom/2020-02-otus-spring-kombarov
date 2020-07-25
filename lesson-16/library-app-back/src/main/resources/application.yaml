@@ -18,7 +18,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "health"
+        include: "health,logfile"
       base-path: "/monitoring"
   endpoint:
     health:
@@ -27,3 +27,8 @@ management:
   health:
     defaults:
       enabled: true
+
+logging:
+  level:
+    root: info
+  file: target/logs/app.log
