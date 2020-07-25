@@ -1,0 +1,10 @@
+# Вызов от пользователя с ролью TECH_SUPPORT
+GET http://localhost:8080/monitoring/health
+Authorization: Basic VGVjaDpwYXNzd29yZDE=
+
+###
+# Вызов от пользователя без роли TECH_SUPPORT
+GET http://localhost:8080/monitoring/health
+Authorization: Basic Qm9iOnBhc3N3b3JkMQ==
+
+###

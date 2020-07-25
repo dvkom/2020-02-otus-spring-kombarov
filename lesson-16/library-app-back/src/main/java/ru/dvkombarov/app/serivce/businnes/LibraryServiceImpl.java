@@ -36,26 +36,26 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    @Secured({USER, EDITOR, USER_READ_ONLY})
+    @Secured({ROLE_USER, ROLE_EDITOR, ROLE_USER_READ_ONLY})
     public Book getBookById(long id) {
         return bookRepository.getById(id)
                 .orElseThrow(() -> new DaoOperationException("Книга с данным id не найдена"));
     }
 
     @Override
-    @Secured({USER, EDITOR, USER_READ_ONLY})
+    @Secured({ROLE_USER, ROLE_EDITOR, ROLE_USER_READ_ONLY})
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
     @Override
-    @Secured(EDITOR)
+    @Secured(ROLE_EDITOR)
     public void deleteBookById(long bookId) {
         bookRepository.deleteById(bookId);
     }
 
     @Override
-    @Secured(EDITOR)
+    @Secured(ROLE_EDITOR)
     public Book updateBook(long id, String title, int pageCount, String authorName,
                            String authorCountry, String genreName) {
         Book bookToUpdate = bookRepository.getById(id)
@@ -84,7 +84,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    @Secured(EDITOR)
+    @Secured(ROLE_EDITOR)
     public Book saveBook(String title, int pageCount, String authorName,
                          String authorCountry, String genreName) {
 
@@ -101,7 +101,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    @Secured({USER, EDITOR})
+    @Secured({ROLE_USER, ROLE_EDITOR})
     public Comment saveComment(String text, long bookId) {
         Book book = bookRepository.getById(bookId)
                 .orElseThrow(() -> new DaoOperationException("Ошибка сохранения комментария: " +
@@ -112,7 +112,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    @Secured({USER, EDITOR, USER_READ_ONLY})
+    @Secured({ROLE_USER, ROLE_EDITOR, ROLE_USER_READ_ONLY})
     public List<Comment> getAllCommentsByBookId(long id) {
         return commentRepository.getByBookId(id);
     }

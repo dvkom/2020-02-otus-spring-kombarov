@@ -13,3 +13,17 @@ spring:
       ddl-auto: none
 
     show-sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health"
+      base-path: "/monitoring"
+  endpoint:
+    health:
+      show-details: when_authorized
+      roles: "ROLE_TECH_SUPPORT"
+  health:
+    defaults:
+      enabled: true
