@@ -20,7 +20,7 @@
     "reactstrap": "^7.1.0",
     "react-router-dom": "^4.1.2"
   },
-  "proxy": "http://localhost:8080",
+  "proxy": "http://back:8080",
   "browserslist": [
     ">0.2%",
     "not dead",
