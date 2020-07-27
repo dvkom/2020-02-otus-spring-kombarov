@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DATABASE_TO_UPPER=false;DB_CLOSE_DELAY=-1
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    initialization-mode: always
+    platform: prod
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+    show-sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,logfile"
+      base-path: "/monitoring"
+  endpoint:
+    health:
+      show-details: when_authorized
+      roles: "ROLE_TECH_SUPPORT"
+  health:
+    defaults:
+      enabled: true
+
+logging:
+  level:
+    root: info
+  file: target/logs/app.log
