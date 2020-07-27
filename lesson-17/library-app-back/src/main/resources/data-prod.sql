@@ -1,5 +1,5 @@
 insert into authors
-    (id, `name`, country)
+    (id, name, country)
 values
     (1, 'Isaac Asimov', 'USA'),
     (2, 'Jack London', 'USA'),
@@ -7,7 +7,7 @@ values
     (4, 'Victor Pelevin', 'Russia');
 
 insert into genres
-    (id, `name`)
+    (id, name)
 values
     (1, 'Science fiction'),
     (2, 'Novel'),
@@ -46,8 +46,13 @@ values
     (16, 'I recommend...', 6);
 
 insert into users
-    (id, `name`, role, password)
+    (id, name, role, password)
 values
     (1, 'Bob', 'EDITOR', '{bcrypt}$2a$10$rOig86WsLHqinIvPQsxGrOckNvOgVJ8n8coVK/rLCtxZ.tlv4qbPu'),
     (2, 'Alice', 'USER', '{bcrypt}$2a$10$WM9/7EqjyCSVTjHMSPilDuyI4BHUAIR8MhM13f6IDVv.o3wMtsvz.'),
     (3, 'Eve', 'USER_READ_ONLY', '{bcrypt}$2a$10$RMU/Ya20Bq2hcwcNC.cAyOsVj21SpG72kBsUY3WaBHZXuJDr.a.7m');
+alter sequence authors_id_seq restart with 5;
+alter sequence genres_id_seq restart with 4;
+alter sequence books_id_seq restart with 9;
+alter sequence comments_id_seq restart with 17;
+alter sequence users_id_seq restart with 4;
