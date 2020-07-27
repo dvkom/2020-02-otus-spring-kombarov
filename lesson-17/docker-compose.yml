@@ -7,6 +7,8 @@ services:
     privileged: true
     ports:
       - "8080:8080"
+    depends_on:
+      - postgres
     environment:
       - DB_DRIVER=org.postgresql.Driver
       - DB_URL=jdbc:postgresql://postgres:5432/library
@@ -32,6 +34,8 @@ services:
     privileged: true
     ports:
       - "3000:3000"
+    depends_on:
+      - back
     networks:
       - nw
 networks:
