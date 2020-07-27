@@ -15,14 +15,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-                .antMatchers("/");
+                .antMatchers("/", "/monitoring");
     }
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .authorizeRequests().antMatchers("/api/auth").authenticated()
+                .authorizeRequests()
+                .antMatchers("/api/auth", "/monitoring/health/**", "/monitoring/logfile/**")
+                .authenticated()
                 .and()
                 .authorizeRequests().anyRequest().hasAnyRole("EDITOR", "USER", "USER_READ_ONLY")
                 .and()

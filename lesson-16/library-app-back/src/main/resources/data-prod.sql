@@ -50,4 +50,5 @@ insert into users
 values
     (1, 'Bob', 'EDITOR', '{bcrypt}$2a$10$rOig86WsLHqinIvPQsxGrOckNvOgVJ8n8coVK/rLCtxZ.tlv4qbPu'),
     (2, 'Alice', 'USER', '{bcrypt}$2a$10$WM9/7EqjyCSVTjHMSPilDuyI4BHUAIR8MhM13f6IDVv.o3wMtsvz.'),
-    (3, 'Eve', 'USER_READ_ONLY', '{bcrypt}$2a$10$RMU/Ya20Bq2hcwcNC.cAyOsVj21SpG72kBsUY3WaBHZXuJDr.a.7m');
+    (3, 'Eve', 'USER_READ_ONLY', '{bcrypt}$2a$10$RMU/Ya20Bq2hcwcNC.cAyOsVj21SpG72kBsUY3WaBHZXuJDr.a.7m'),
+    (4, 'Tech', 'TECH_SUPPORT', '{bcrypt}$2a$10$rOig86WsLHqinIvPQsxGrOckNvOgVJ8n8coVK/rLCtxZ.tlv4qbPu');
