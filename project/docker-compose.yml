@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     privileged: true
     ports:
-      - "8082:8080"
+      - "8082:8082"
     depends_on:
       - postgres
     environment:
@@ -15,6 +15,20 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
       - WAIT_FOR=postgres:5432
+    networks:
+      - nw
+  report-analyzer:
+    build:
+      context: ./report-analyzer/
+      dockerfile: Dockerfile
+    privileged: true
+    ports:
+      - "8081:8081"
+    depends_on:
+      - exploit-source
+    environment:
+      - EXPLOIT_SOURCE_URL=http://exploit-source:8082
+      - WAIT_FOR=exploit-source:8082
     networks:
       - nw
   postgres:

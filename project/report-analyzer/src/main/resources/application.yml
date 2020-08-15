@@ -1,0 +1,12 @@
+logging:
+  level:
+    org.springframework: INFO
+    ru.dvkombarov: DEBUG
+    org.apache.tika: ERROR
+
+app:
+  exploit-source-url: ${EXPLOIT_SOURCE_URL}
+  exploit-source-endpoint: /api/vulners/
+
+server:
+  port: 8081
