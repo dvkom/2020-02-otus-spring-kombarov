@@ -1,4 +1,4 @@
-package ru.dvkombarov.app.rest;
+package ru.dvkombarov.app.rest.endpoints;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,8 +42,6 @@ public class AnalyzeController {
       throw new ReportParseException(e);
     }
   }
-
-  // TODO handle Spring Security exceptions
 
   @ExceptionHandler(ReportParseException.class)
   public ResponseEntity<String> handleReportParseException(ReportParseException e) {

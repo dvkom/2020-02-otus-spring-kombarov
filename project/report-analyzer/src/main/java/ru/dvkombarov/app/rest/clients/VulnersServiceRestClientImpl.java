@@ -1,4 +1,4 @@
-package ru.dvkombarov.app.rest;
+package ru.dvkombarov.app.rest.clients;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,6 +6,8 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
@@ -31,9 +33,8 @@ public class VulnersServiceRestClientImpl implements VulnersService {
     this.config = config;
   }
 
-  // TODO try to use Spring retry for requests
-
   @Override
+  @Retryable(backoff=@Backoff(delay = 3000))
   public List<VulnerInfoDto> getVulnersInfoByCveList(@Nonnull List<String> cveList) {
     LOG.info("Call method getVulnersInfoByCveList, CVE count = {}", cveList.size());
     String requestParams = String.join(",", cveList);
