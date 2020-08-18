@@ -31,6 +31,17 @@ services:
       - WAIT_FOR=exploit-source:8082
     networks:
       - nw
+  web-ui:
+    build:
+      context: ./web-ui/
+      dockerfile: Dockerfile
+    privileged: true
+    ports:
+      - "3000:3000"
+    depends_on:
+      - report-analyzer
+    networks:
+      - nw
   postgres:
     image: "postgres"
     ports:
