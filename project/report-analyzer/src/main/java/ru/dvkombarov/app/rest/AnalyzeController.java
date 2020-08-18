@@ -33,10 +33,9 @@ public class AnalyzeController {
   }
 
   @PostMapping("/api/upload")
-  public List<VulnerInfoDto> uploadFile(@RequestParam("name") String name,
-                                        @RequestParam("file") MultipartFile file) {
+  public List<VulnerInfoDto> uploadFile(@RequestParam("file") MultipartFile file) {
 
-    LOG.info("Call endpoint uploadFile, name = {}", name);
+    LOG.info("Call endpoint uploadFile, name = {}", file.getName());
     try (InputStream inputStream = file.getInputStream()) {
       return reportAnalyzer.analyze(inputStream);
     } catch (IOException e) {

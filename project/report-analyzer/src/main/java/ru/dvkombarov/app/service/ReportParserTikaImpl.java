@@ -13,6 +13,7 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import ru.dvkombarov.app.exceptions.ReportParseException;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -30,6 +31,7 @@ public class ReportParserTikaImpl implements ReportParser {
   );
 
   @Override
+  @Nonnull
   public List<String> parseCve(InputStream inputStream) {
     try {
       String plainTextReport = parsePlainText(inputStream);
