@@ -12,6 +12,15 @@ public class VulnerInfoDto {
   private String description;
   private Set<ExploitDto> exploits;
 
+  public VulnerInfoDto() {
+  }
+
+  public VulnerInfoDto(String cve, String description, Set<ExploitDto> exploits) {
+    this.cve = cve;
+    this.description = description;
+    this.exploits = exploits;
+  }
+
   public String getCve() {
     return cve;
   }

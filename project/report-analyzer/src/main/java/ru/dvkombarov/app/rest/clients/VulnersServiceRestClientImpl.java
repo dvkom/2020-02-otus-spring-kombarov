@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.dvkombarov.app.configuration.ReportAnalyzerConfig;
@@ -27,10 +26,12 @@ public class VulnersServiceRestClientImpl implements VulnersService {
   private final Logger LOG = LoggerFactory.getLogger(VulnersServiceRestClientImpl.class);
 
   private final ReportAnalyzerConfig config;
-  private RestOperations rest = new RestTemplate();
+  private final RestTemplate restTemplate;
 
-  public VulnersServiceRestClientImpl(ReportAnalyzerConfig config) {
+  public VulnersServiceRestClientImpl(ReportAnalyzerConfig config,
+                                      RestTemplate restTemplate) {
     this.config = config;
+    this.restTemplate = restTemplate;
   }
 
   @Override
@@ -49,10 +50,9 @@ public class VulnersServiceRestClientImpl implements VulnersService {
         HttpMethod.GET,
         UriComponentsBuilder.fromHttpUrl(config.getExploitSourceUrl())
             .path(config.getExploitSourceEndpoint() + requestParams)
-            .queryParam("locale", "ru")
             .build().toUri());
 
-    ResponseEntity<List<VulnerInfoDto>> response = rest.exchange(
+    ResponseEntity<List<VulnerInfoDto>> response = restTemplate.exchange(
         request, new ParameterizedTypeReference<>() {}
     );
 
