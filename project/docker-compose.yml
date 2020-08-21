@@ -8,13 +8,14 @@ services:
     ports:
       - "8082:8082"
     depends_on:
-      - postgres
+      - postgres-main
     environment:
       - DB_DRIVER=org.postgresql.Driver
-      - DB_URL=jdbc:postgresql://postgres:5432/source?reWriteBatchedInserts=true
+      - DB_URL=jdbc:postgresql://postgres-main:5432/source?reWriteBatchedInserts=true
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
-      - WAIT_FOR=postgres:5432
+      - SERVER_PORT=8082
+      - WAIT_FOR=postgres-main:5432
     networks:
       - nw
   report-analyzer:
@@ -26,9 +27,20 @@ services:
       - "8081:8081"
     depends_on:
       - exploit-source
+      - postgres-sec
     environment:
       - EXPLOIT_SOURCE_URL=http://exploit-source:8082
+      - EXPLOIT_SOURCE_ENDPOINT=/api/vulners/
+      - TOCKEN_SECRET=fn4U3kp5nIrUDlFRRBJUeN4CfacF7NN5
+      - TOCKEN_EXPIRE=86400000
+      - TOCKEN_TYPE=Bearer
+      - DB_DRIVER=org.postgresql.Driver
+      - DB_URL=jdbc:postgresql://postgres-sec:5433/auth
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - SERVER_PORT=8081
       - WAIT_FOR=exploit-source:8082
+      - WAIT_FOR=postgres-sec:5433
     networks:
       - nw
   web-ui:
@@ -42,14 +54,27 @@ services:
       - report-analyzer
     networks:
       - nw
-  postgres:
-    image: "postgres"
+  postgres-main:
+    image: postgres
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=source
+    networks:
+      - nw
+  postgres-sec:
+    image: postgres
+    expose:
+      - "5433"
+    ports:
+      - "5433:5433"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=auth
+    command: -p 5433
     networks:
       - nw
 networks:

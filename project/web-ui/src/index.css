@@ -1,0 +1,82 @@
+/**
+  Link
+**/
+
+a {
+  color: #2098f3;
+  text-decoration: none;
+  word-wrap: break-word;
+  cursor: pointer;
+}
+
+a:hover {
+  color: #40a9ff;
+  text-decoration: none;
+}
+
+/**
+  Button
+**/
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+/**
+  Form
+**/
+
+.form-item {
+	margin-bottom: 18px;
+}
+
+.form-item .btn {
+    cursor: pointer;
+}
+
+.form-control {
+  margin: 0;
+  list-style: none;
+  position: relative;
+  display: inline-block;
+  padding: 4px 11px;
+  width: 100%;
+  height: 45px;
+  font-size: 0.87em;
+  line-height: 45px;
+  color: rgba(0,0,0,.80);
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  transition: all .3s;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+.form-control:hover, .form-control:focus, .form-control:active {
+  border-color: #2098f3;
+  outline: 0;
+  border-right-width: 1px!important;
+}
+
+.form-control:focus, .form-control:active {
+  box-shadow: 0 0 0 2px rgba(24,144,255,.2);    
+}
+
+.form-control.invalid {
+  border-color: #f5222d;
+}
+
+.form-control.invalid:focus, .form-control.invalid:active {
+  box-shadow: 0 0 0 2px rgba(245,34,45,.2);        
+} 
+
+.form-control[disabled], fieldset[disabled] .form-control {
+  cursor: not-allowed;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+  background-color: #f6f8fa;
+  opacity: 1;
+}

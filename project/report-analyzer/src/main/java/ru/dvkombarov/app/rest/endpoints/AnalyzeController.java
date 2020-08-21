@@ -4,10 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.dvkombarov.app.exceptions.ReportParseException;
 import ru.dvkombarov.app.rest.dto.VulnerInfoDto;
@@ -20,6 +17,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @RestController
+@RequestMapping("/api")
 public class AnalyzeController {
 
   private final Logger LOG = LoggerFactory.getLogger(AnalyzeController.class);
@@ -32,7 +30,7 @@ public class AnalyzeController {
     this.reportAnalyzer = reportAnalyzer;
   }
 
-  @PostMapping("/api/upload")
+  @PostMapping("/upload")
   public List<VulnerInfoDto> uploadFile(@RequestParam("file") MultipartFile file) {
 
     LOG.info("Call endpoint uploadFile, name = {}", file.getName());

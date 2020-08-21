@@ -1,3 +1,13 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: ${DB_DRIVER}
+  jpa:
+    hibernate:
+      ddl-auto: update
+
 logging:
   level:
     org.springframework: INFO
@@ -6,7 +16,11 @@ logging:
 
 app:
   exploit-source-url: ${EXPLOIT_SOURCE_URL}
-  exploit-source-endpoint: /api/vulners/
+  exploit-source-endpoint: ${EXPLOIT_SOURCE_ENDPOINT}
+  auth:
+    tokenSecret: ${TOCKEN_SECRET}
+    tokenExpirationMsec: ${TOCKEN_EXPIRE}
+    tockenType: ${TOCKEN_TYPE}
 
 server:
-  port: 8081
+  port: ${SERVER_PORT}

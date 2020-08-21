@@ -1,0 +1,13 @@
+.file-form {
+    width: 800px;
+    margin-top: 40px;
+}
+
+.cve-cards {
+    width: 18rem;
+}
+
+.file-input-div {
+    display: flex;
+    justify-content: center;
+}

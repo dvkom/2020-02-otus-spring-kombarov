@@ -1,0 +1,29 @@
+.app-header {
+    height: 60px;
+    position: relative;
+    z-index: 10;
+}
+
+.app-title {
+    line-height: 60px;
+    vertical-align: middle;
+    font-size: 2.35em;
+}
+
+.app-buttons {
+    float: right;
+    vertical-align: middle;
+    padding-left: 15px;
+    padding-right: 15px;
+    line-height: 60px;
+    color: rgba(0,0,0,0.65);
+}
+
+.container {
+    width: 100%;
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
