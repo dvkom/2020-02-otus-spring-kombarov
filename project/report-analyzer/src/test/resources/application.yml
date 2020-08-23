@@ -7,6 +7,9 @@ logging:
 app:
   exploit-source-url: http://localhost
   exploit-source-endpoint: /api/vulners/
-
+  auth:
+    tokenSecret: fn4U3kp5nIrUDlFRRBJUeN4CfacF7NN5
+    tokenExpirationMsec: 86400000
+    tockenType: Bearer
 server:
   port: 8081

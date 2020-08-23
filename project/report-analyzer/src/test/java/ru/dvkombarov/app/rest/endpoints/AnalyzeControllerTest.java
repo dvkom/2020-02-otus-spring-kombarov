@@ -6,12 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ru.dvkombarov.app.configuration.AuthProperties;
 import ru.dvkombarov.app.exceptions.ReportParseException;
+import ru.dvkombarov.app.repository.UserRepository;
 import ru.dvkombarov.app.rest.dto.VulnerInfoDto;
+import ru.dvkombarov.app.security.CustomUserDetailsService;
+import ru.dvkombarov.app.security.JwtTokenProvider;
+import ru.dvkombarov.app.security.RestAuthenticationEntryPoint;
 import ru.dvkombarov.app.service.ReportAnalyzer;
 
 import java.io.ByteArrayInputStream;
@@ -26,12 +33,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AnalyzeController.class)
 @AutoConfigureWebClient
+@WithMockUser
+@Import({JwtTokenProvider.class, AuthProperties.class,
+    CustomUserDetailsService.class, RestAuthenticationEntryPoint.class})
 @DisplayName("Methods of the analyze controller should ")
 class AnalyzeControllerTest {
 
-
   @MockBean
   private ReportAnalyzer reportAnalyzer;
+
+  @MockBean
+  private UserRepository userRepository;
 
   @Autowired
   private MockMvc mockMvc;

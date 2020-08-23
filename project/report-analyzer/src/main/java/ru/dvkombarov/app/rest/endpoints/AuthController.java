@@ -5,11 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import ru.dvkombarov.app.configuration.AuthProperties;
 import ru.dvkombarov.app.domain.User;
@@ -94,8 +95,8 @@ public class AuthController {
     return new SingUpResponse(true, "User registered successfully");
   }
 
-  @ExceptionHandler({BadRequestException.class, BadCredentialsException.class})
-  public ResponseEntity<String> handleBadRequestException(BadRequestException e) {
+  @ExceptionHandler({AuthenticationException.class, MethodArgumentNotValidException.class})
+  public ResponseEntity<String> handleBadRequestException(Exception e) {
     LOG.error(e.getMessage(), e);
 
     return ResponseEntity.badRequest()

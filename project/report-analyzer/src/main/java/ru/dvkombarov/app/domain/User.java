@@ -24,6 +24,15 @@ public class User {
   @JsonIgnore
   private String password;
 
+  public User() {
+  }
+
+  public User(String name, @Email String email, String password) {
+    this.name = name;
+    this.email = email;
+    this.password = password;
+  }
+
   public Long getId() {
     return id;
   }
