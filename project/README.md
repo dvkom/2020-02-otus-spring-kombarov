@@ -5,7 +5,7 @@ This is an application to search for existing exploits and match them with CVE n
 - parsing: apache.tika;
 - deploy: docker
 <p align="center">
-  <img src="https://raw.githubusercontent.com/dvkom/2020-02-otus-spring-kombarov/tree/master/img/architecture.png">
+  <img src="https://raw.githubusercontent.com/dvkom/2020-02-otus-spring-kombarov/master/img/architecture.png">
 </p>
 
 Quickstart:
@@ -15,5 +15,5 @@ Quickstart:
 - sign up and then sign in;
 - load a report.
 <p align="center">
-  <img src="https://raw.githubusercontent.com/dvkom/2020-02-otus-spring-kombarov/tree/master/img/exploit-finder-ui.png">
+  <img src="https://raw.githubusercontent.com/dvkom/2020-02-otus-spring-kombarov/master/img/exploit-finder-ui.png">
 </p>
